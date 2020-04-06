@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4027866056112974613}
   - component: {fileID: 4027866056112974608}
   - component: {fileID: 4027866056112974615}
+  - component: {fileID: 20392334986806040}
   m_Layer: 0
   m_Name: Ufo
   m_TagString: Ufo
@@ -130,3 +131,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &20392334986806040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4027866056112974612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140a0b3a764ec49818fe747cde4a9eb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ufoClip: {fileID: 8300000, guid: 9d4a433337260c74b85cfb9f4f269c43, type: 3}

@@ -12,11 +12,13 @@ public class GameManager : MonoBehaviour
     public Text loseText;
     public Image loseImage;
     public GameObject[] objects;
+    public GameObject[] bonuses;
 
     Hands hands;
 
     int score; //game score
     bool createObjects;
+    bool pauseActive;
 
 
     private void Start()
@@ -26,10 +28,35 @@ public class GameManager : MonoBehaviour
         textScore.text = "Score: 0";
         textLives.text = "Lives: " + lives;
         createObjects = true;
-        ChangeSpeedObjects(0, 1);
+        SetGravityScale();// make gravity scale 1
+        pauseActive = false;
 
-        InvokeRepeating("CreateObject", 2, 1);
+        InvokeRepeating("CreateObject", 1, 0.8f);
+        InvokeRepeating("CreateBonus", 8, 8);
+        InvokeRepeating("ChangeSpeedObjects", 10, 10);
 
+    }
+
+
+    public void PauseGame() //Пауза в игре
+    {
+        Hands hands = FindObjectOfType<Hands>();
+
+        if (pauseActive)
+        {
+            Time.timeScale = 1;
+            //turn off Pause                
+            pauseActive = false;
+            hands.transformHands = true; ; //turn on the movement
+        }
+        else
+        {
+            //turn on Pause
+            Time.timeScale = 0;
+            pauseActive = true;
+            hands.transformHands = false;//turn off the movement
+            
+        }
     }
 
 
@@ -42,6 +69,19 @@ public class GameManager : MonoBehaviour
             float xPosition = Random.Range(-9, 9);
             Vector3 newPosition = new Vector3(xPosition, transform.position.y, transform.position.z);
             Instantiate(objects[indexObject], newPosition, Quaternion.identity);
+        }
+    }
+
+    void CreateBonus()
+    {
+        int chance = Random.Range(0, 2);
+
+        if (createObjects == true && chance == 0)
+        {
+            int indexObject = Random.Range(0, bonuses.Length);
+            float xPosition = Random.Range(-9, 9);
+            Vector3 newPosition = new Vector3(xPosition, transform.position.y, transform.position.z);
+            Instantiate(bonuses[indexObject], newPosition, Quaternion.identity);
         }
     }
 
@@ -65,23 +105,46 @@ public class GameManager : MonoBehaviour
 
         score = 0;
         textScore.text = "Score: " + score;
-        ChangeSpeedObjects(0, 1);
+
+
+        //return gravity scale to one in each element
+        SetGravityScale();
 
         createObjects = true;
         hands.transformHands = true;
     }
 
-    public void ChangeSpeedObjects(int scoreNumber, int scaleNumber)
+    private void SetGravityScale()
     {
-        if (score == scoreNumber)
+        foreach (GameObject element in objects)
         {
-            foreach (GameObject element in objects)
-            {
-                Rigidbody2D rb = element.GetComponent<Rigidbody2D>();
-                rb.gravityScale = scaleNumber;
-            }
+            Rigidbody2D rb = element.GetComponent<Rigidbody2D>();
+            rb.gravityScale = 1;
+        }
+
+        foreach (GameObject element in bonuses)
+        {
+            Rigidbody2D rb = element.GetComponent<Rigidbody2D>();
+            rb.gravityScale = 1;
         }
     }
+
+    public void ChangeSpeedObjects()
+    {
+        
+        foreach (GameObject element in objects)
+        {
+            Rigidbody2D rb = element.GetComponent<Rigidbody2D>();
+            rb.gravityScale = rb.gravityScale + 1;
+        }
+
+        foreach (GameObject element in bonuses)
+        {
+            Rigidbody2D rb = element.GetComponent<Rigidbody2D>();
+            rb.gravityScale = rb.gravityScale + 1;
+        }
+    }
+
 
     public void AddScore(int number)
     {
@@ -91,8 +154,21 @@ public class GameManager : MonoBehaviour
 
     public void ChangeLives(int number)
     {
+        
         lives += number;
         textLives.text = "Lives: " + lives;
+        
     }
 
+
+
+
+
+
+
+
 }
+
+   
+
+

@@ -51,3 +51,8 @@ MonoBehaviour:
   objects:
   - {fileID: 544666022919685138, guid: 887768c4b7eab469c88e543bbee84b71, type: 3}
   - {fileID: 4027866056112974612, guid: 8d069c532782d413c90feaf776bf145e, type: 3}
+  - {fileID: 544666022919685138, guid: c78fca0e464ca4587ad15143970bfd9b, type: 3}
+  - {fileID: 4027866056112974612, guid: 929165400375e46249586849c7a2b790, type: 3}
+  bonuses:
+  - {fileID: 9159133252498398746, guid: 5e68e38c4118c425db8bafef1e06f1bf, type: 3}
+  - {fileID: 4099162555014080177, guid: ddb9874cfcfb24513bbbb7540658b2a1, type: 3}

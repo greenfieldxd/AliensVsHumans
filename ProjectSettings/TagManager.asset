@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Human
   - Ufo
+  - Hands
   layers:
   - Default
   - TransparentFX

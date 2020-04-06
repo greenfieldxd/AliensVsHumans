@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 3715741877946694913}
   m_Layer: 0
   m_Name: Hands
-  m_TagString: Untagged
+  m_TagString: Hands
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -157,6 +157,10 @@ MonoBehaviour:
   minX: -10
   maxX: 10
   points: 1
+  transformHands: 0
+  ufoClip: {fileID: 0}
+  starClip: {fileID: 0}
+  bombClip: {fileID: 0}
 --- !u!61 &3715741877946694913
 BoxCollider2D:
   m_ObjectHideFlags: 0

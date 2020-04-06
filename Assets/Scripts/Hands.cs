@@ -6,16 +6,14 @@ public class Hands : MonoBehaviour
 {
     public float minX; // Максимальное и минимальное X координат платформы
     public float maxX;
-    public int points = 1;
     public bool transformHands;
 
-    GameManager gm;
+    
 
 
 
     void Start()
     {
-        gm = FindObjectOfType<GameManager>();
         transformHands = true;
     }
 
@@ -40,23 +38,5 @@ public class Hands : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Human"))
-        {
-            gm.AddScore(points);
-            gm.ChangeSpeedObjects(25, 2);
-            gm.ChangeSpeedObjects(50, 3);
-            gm.ChangeSpeedObjects(75, 4);
-            gm.ChangeSpeedObjects(100, 6);
-            gm.ChangeSpeedObjects(125, 8);
-            Destroy(collision.gameObject); 
-        }
-        if (collision.gameObject.CompareTag("Ufo"))
-        {
-            gm.ChangeLives(-1);
-            Destroy(collision.gameObject);
-            gm.CheckLoseOrNot();
-        }
-    }
+   
 }
