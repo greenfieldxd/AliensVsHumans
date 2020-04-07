@@ -144,3 +144,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bombClip: {fileID: 8300000, guid: 995344392c130b043905054730c5826c, type: 3}
+  Boom: {fileID: 353346965923670849, guid: e8284547a83c42046b1ae0e82c965e4d, type: 3}

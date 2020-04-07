@@ -5,7 +5,9 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     AudioSource audioSource;
+
     public AudioClip bombClip;
+    public GameObject Boom;
 
 
 
@@ -13,11 +15,18 @@ public class Bomb : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Hands"))
         {
+          
+
             Ufo[] UfoObjects = FindObjectsOfType<Ufo>();
             audioSource = FindObjectOfType<AudioSource>();
             audioSource.PlayOneShot(bombClip);
 
-            foreach (Ufo Ufo in UfoObjects) { Destroy(Ufo.gameObject); }
+            foreach (Ufo Ufo in UfoObjects)
+            {
+                GameObject newObject = Instantiate(Boom, Ufo.transform.position, Quaternion.identity);
+                Destroy(newObject.gameObject, 2f);
+                Destroy(Ufo.gameObject);
+            }
             Destroy(gameObject);
         }
     }
