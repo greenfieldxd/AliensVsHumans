@@ -31,9 +31,13 @@ public class GameManager : MonoBehaviour
         SetGravityScale();// make gravity scale 1
         pauseActive = false;
 
-        InvokeRepeating("CreateObject", 1, 0.8f);
-        InvokeRepeating("CreateBonus", 8, 8);
-        InvokeRepeating("ChangeSpeedObjects", 10, 10);
+        //InvokeRepeating("CreateObject", 1, 0.8f);
+        //InvokeRepeating("CreateBonus", 8, 8);
+        //InvokeRepeating("ChangeSpeedObjects", 10, 10);
+
+        StartCoroutine(CreateObject(1));
+        StartCoroutine(CreateBonus(8));
+        StartCoroutine(ChangeSpeedObjects(10));
 
     }
 
@@ -61,19 +65,22 @@ public class GameManager : MonoBehaviour
 
 
 
-    void CreateObject()
+    IEnumerator CreateObject(float delay)
     {
-        if (createObjects == true)
-        {
-            int indexObject = Random.Range(0, objects.Length);
-            float xPosition = Random.Range(-9, 9);
-            Vector3 newPosition = new Vector3(xPosition, transform.position.y, transform.position.z);
-            Instantiate(objects[indexObject], newPosition, Quaternion.identity);
-        }
+        yield return new WaitForSeconds(delay);
+
+        int indexObject = Random.Range(0, objects.Length);
+        float xPosition = Random.Range(-9, 9);
+        Vector3 newPosition = new Vector3(xPosition, transform.position.y, transform.position.z);
+        Instantiate(objects[indexObject], newPosition, Quaternion.identity);
+
+        StartCoroutine(CreateObject(0.8f));// создание объекта каждые 0.8 секунды
     }
 
-    void CreateBonus()
+    IEnumerator CreateBonus(float delay)
     {
+        yield return new WaitForSeconds(delay);
+
         int chance = Random.Range(0, 2);
 
         if (createObjects == true && chance == 0)
@@ -83,12 +90,44 @@ public class GameManager : MonoBehaviour
             Vector3 newPosition = new Vector3(xPosition, transform.position.y, transform.position.z);
             Instantiate(bonuses[indexObject], newPosition, Quaternion.identity);
         }
+
+        StartCoroutine(CreateBonus(8));
     }
+
+
+    IEnumerator ChangeSpeedObjects(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        foreach (GameObject element in objects)
+        {
+            Rigidbody2D rb = element.GetComponent<Rigidbody2D>();
+            rb.gravityScale = rb.gravityScale + 1;
+        }
+
+        foreach (GameObject element in bonuses)
+        {
+            Rigidbody2D rb = element.GetComponent<Rigidbody2D>();
+            rb.gravityScale = rb.gravityScale + 1;
+        }
+
+        StartCoroutine(ChangeSpeedObjects(10)); 
+    }
+
 
     public void CheckLoseOrNot()
     {
         if (lives == 0)
         {
+            Time.timeScale = 0;
+
+            Human[] humans = FindObjectsOfType<Human>();
+            Ufo[] ufos = FindObjectsOfType<Ufo>();
+
+            foreach (Human human in humans) { Destroy(human.gameObject); }
+            foreach (Ufo ufo in ufos) { Destroy(ufo.gameObject); }
+
+
             loseImage.gameObject.SetActive(true);
             loseText.text = "You lost, the result was: " + score + ".";
             createObjects = false;
@@ -99,6 +138,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayAgain()
     {
+        Time.timeScale = 1;
         loseImage.gameObject.SetActive(false);
         lives = 3;
         textLives.text = "Lives: " + lives;
@@ -129,21 +169,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ChangeSpeedObjects()
-    {
-        
-        foreach (GameObject element in objects)
-        {
-            Rigidbody2D rb = element.GetComponent<Rigidbody2D>();
-            rb.gravityScale = rb.gravityScale + 1;
-        }
-
-        foreach (GameObject element in bonuses)
-        {
-            Rigidbody2D rb = element.GetComponent<Rigidbody2D>();
-            rb.gravityScale = rb.gravityScale + 1;
-        }
-    }
 
 
     public void AddScore(int number)
@@ -154,10 +179,8 @@ public class GameManager : MonoBehaviour
 
     public void ChangeLives(int number)
     {
-        
         lives += number;
         textLives.text = "Lives: " + lives;
-        
     }
 
 
